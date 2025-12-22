@@ -1,0 +1,53 @@
+{
+  "name": "tiny-inventory-server",
+  "version": "1.0.0",
+  "description": "Tiny Inventory System - Backend API",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --env-file=.env src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "db:migrate": "mikro-orm migration:create",
+    "db:up": "mikro-orm migration:up",
+    "db:seed": "tsx src/utils/seed.ts"
+  },
+  "keywords": [
+    "inventory",
+    "fastify",
+    "mikroorm",
+    "postgresql"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/cors": "^8.0.0",
+    "@mikro-orm/core": "^6.3.13",
+    "@mikro-orm/postgresql": "^6.3.13",
+    "@mikro-orm/reflection": "^6.3.13",
+    "@sinclair/typebox": "^0.33.15",
+    "@types/jsonwebtoken": "^9.0.10",
+    "fastify": "^4.28.1",
+    "jsonwebtoken": "^9.0.3",
+    "pino": "^9.5.0",
+    "pino-pretty": "^11.2.2",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@mikro-orm/cli": "^6.3.13",
+    "@types/node": "^20.17.6",
+    "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "@vitest/coverage-v8": "^2.1.5",
+    "eslint": "^8.57.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.5"
+  },
+  "module": "src/index.ts",
+  "private": true
+}

@@ -1,0 +1,519 @@
+{
+  "info": {
+    "name": "Tiny Inventory API",
+    "description": "Complete API collection for the Tiny Inventory management system. Includes endpoints for stores, products, inventory management, and health checks.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "tiny-inventory"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "storeId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "productId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": "Check the health status of the API and database connection"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Stores",
+      "item": [
+        {
+          "name": "Get All Stores",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/stores?page=1&limit=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stores"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (default: 1)"
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Items per page (default: 20, max: 100)"
+                },
+                {
+                  "key": "search",
+                  "value": "Downtown",
+                  "description": "Search stores by name (case-insensitive partial match)",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Retrieve a list of all stores with optional filtering and pagination"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Store by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/stores/{{storeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stores",
+                "{{storeId}}"
+              ]
+            },
+            "description": "Get detailed information about a specific store by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Store",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('storeId', response.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Downtown Store\",\n  \"address\": \"123 Main Street, New York, NY 10001\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/stores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stores"
+              ]
+            },
+            "description": "Create a new store. The store ID will be saved to the collection variable for use in other requests."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Store",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Downtown Store - Updated\",\n  \"address\": \"456 Broadway, New York, NY 10012\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/stores/{{storeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stores",
+                "{{storeId}}"
+              ]
+            },
+            "description": "Update an existing store. All fields are optional."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Store",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/stores/{{storeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stores",
+                "{{storeId}}"
+              ]
+            },
+            "description": "Delete a store by ID."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products?page=1&limit=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (default: 1)"
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Items per page (default: 20, max: 100)"
+                },
+                {
+                  "key": "category",
+                  "value": "Electronics",
+                  "description": "Filter by category",
+                  "disabled": true
+                },
+                {
+                  "key": "minPrice",
+                  "value": "10",
+                  "description": "Minimum price filter",
+                  "disabled": true
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "100",
+                  "description": "Maximum price filter",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "price",
+                  "description": "Sort field (name, price, category, createdAt)",
+                  "disabled": true
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "asc",
+                  "description": "Sort order (asc, desc)",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get all products with optional filtering, sorting, and pagination"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{productId}}"
+              ]
+            },
+            "description": "Get detailed information about a specific product"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('productId', response.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Wireless Mouse\",\n  \"category\": \"Electronics\",\n  \"price\": 29.99,\n  \"description\": \"Ergonomic wireless mouse with 2.4GHz connectivity\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            },
+            "description": "Create a new product. Product name must be unique. The product ID will be saved to the collection variable."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Wireless Mouse Pro\",\n  \"price\": 39.99\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{productId}}"
+              ]
+            },
+            "description": "Update an existing product. All fields are optional."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{productId}}"
+              ]
+            },
+            "description": "Delete a product by ID."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "item": [
+        {
+          "name": "Get Store Inventory",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/stores/{{storeId}}/inventory?page=1&limit=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stores",
+                "{{storeId}}",
+                "inventory"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (default: 1)"
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Items per page (default: 20, max: 100)"
+                },
+                {
+                  "key": "category",
+                  "value": "Electronics",
+                  "description": "Filter by product category",
+                  "disabled": true
+                },
+                {
+                  "key": "minStock",
+                  "value": "10",
+                  "description": "Minimum stock level",
+                  "disabled": true
+                },
+                {
+                  "key": "maxStock",
+                  "value": "100",
+                  "description": "Maximum stock level",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get all inventory items for a specific store with optional filtering and pagination"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Product to Store",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"{{productId}}\",\n  \"quantity\": 50\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/stores/{{storeId}}/inventory",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stores",
+                "{{storeId}}",
+                "inventory"
+              ]
+            },
+            "description": "Add a product to a store's inventory with initial quantity."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Inventory Quantity",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 75\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/stores/{{storeId}}/inventory/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stores",
+                "{{storeId}}",
+                "inventory",
+                "{{productId}}"
+              ]
+            },
+            "description": "Update the quantity of a product in a store's inventory."
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Product from Store",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/stores/{{storeId}}/inventory/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stores",
+                "{{storeId}}",
+                "inventory",
+                "{{productId}}"
+              ]
+            },
+            "description": "Remove a product from a store's inventory."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
